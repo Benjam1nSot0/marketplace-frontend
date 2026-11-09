@@ -27,15 +27,15 @@ export default function NavigationBar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto align-items-center">
-            <li className="nav-item">
-              <Link className="nav-link text-light" to="/shop">
-                Tienda
-              </Link>
-            </li>
             {token ? (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link text-light" to="/create-post">
+                  <Link className="nav-link text-light me-2" to="/shop">
+                    Tienda
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link text-light me-2" to="/create-post">
                     + Publicar
                   </Link>
                 </li>
