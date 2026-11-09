@@ -1,25 +1,53 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 export const PostsContext = createContext();
 
-export const PostsProvider = ({ children }) => {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: 'Batería electrónica Alesis Nitro Mesh',
-      description: 'La mejor batería para iniciar en el mundo de la percusión, poco uso.',
-      price: 350000,
-      author: 'Travis Barker',
-      img: 'https://via.placeholder.com/300'
-    }
-  ]);
+// Reemplaza esta URL con la tuya de Render (sin la barra / al final)
+const BASE_URL = 'https://marketplace-backend-aq32.onrender.com';
 
-  const addPost = (newPost) => {
-    setPosts([...posts, { ...newPost, id: Date.now() }]);
+export const PostsProvider = ({ children }) => {
+  const [posts, setPosts] = useState([]);
+
+  // Cargar publicaciones desde PostgreSQL en Render
+  const getPosts = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/posts`);
+      if (res.ok) {
+        const data = await res.json();
+        setPosts(data);
+      }
+    } catch (error) {
+      console.error('Error al obtener las publicaciones:', error);
+    }
   };
 
+  // Guardar una nueva publicación en Render
+  const addPost = async (newPost) => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${BASE_URL}/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(newPost)
+      });
+
+      if (res.ok) {
+        await getPosts(); // Recargar el feed con la nueva publicación
+      }
+    } catch (error) {
+      console.error('Error al crear la publicación:', error);
+    }
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
   return (
-    <PostsContext.Provider value={{ posts, addPost }}>
+    <PostsContext.Provider value={{ posts, getPosts, addPost }}>
       {children}
     </PostsContext.Provider>
   );
