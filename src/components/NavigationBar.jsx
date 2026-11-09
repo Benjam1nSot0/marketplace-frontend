@@ -1,10 +1,9 @@
 import { useContext } from 'react';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 
 export default function NavigationBar() {
-  const { token, logout } = useContext(UserContext);
+  const { token, logout, user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -13,34 +12,61 @@ export default function NavigationBar() {
   };
 
   return (
-    <Navbar bg="warning" expand="lg">
-      <Container>
-        <Navbar.Brand as={Link} to="/">🛒 MarketPlace</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4 shadow-sm">
+      <div className="container-fluid">
+        <Link className="navbar-brand fw-bold fs-3 text-warning" to="/">
+          🛒 MARKETPLACE
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto align-items-center">
+            <li className="nav-item">
+              <Link className="nav-link text-light" to="/shop">
+                Tienda
+              </Link>
+            </li>
             {token ? (
               <>
-                <Nav.Link as={Link} to="/shop">Tienda</Nav.Link>
-                <Nav.Link as={Link} to="/profile">Mi Perfil</Nav.Link>
-                <Nav.Link as={Link} to="/create-post">Publicar</Nav.Link>
-                <Button variant="danger" size="sm" onClick={handleLogout} className="ms-2">
-                  Cerrar Sesión
-                </Button>
+                <li className="nav-item">
+                  <Link className="nav-link text-light" to="/create-post">
+                    + Publicar
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link text-light me-2" to="/profile">
+                    Mi Perfil {user?.username ? `(${user.username})` : ''}
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <button onClick={handleLogout} className="btn btn-outline-danger btn-sm ms-2">
+                    Cerrar sesión
+                  </button>
+                </li>
               </>
             ) : (
               <>
-                <Button variant="outline-dark" as={Link} to="/login" className="me-2">
-                  Iniciar Sesión
-                </Button>
-                <Button variant="success" as={Link} to="/register">
-                  Registrate
-                </Button>
+                <li className="nav-item">
+                  <Link className="btn btn-outline-light me-2" to="/login">
+                    Iniciar sesión
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="btn btn-warning" to="/register">
+                    Registrarse
+                  </Link>
+                </li>
               </>
             )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 }

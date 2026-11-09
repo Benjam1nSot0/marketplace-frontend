@@ -3,14 +3,14 @@ import { useContext } from 'react';
 import { UserContext, UserProvider } from './context/UserContext';
 import { PostsProvider } from './context/PostsContext';
 
-import NavigationBar from './components/NavigationBar';
-import Home from './views/Home';
-import Login from './views/Login';
-import Register from './views/Register';
-import Profile from './views/Profile';
-import Shop from './views/Shop';
-import CreatePost from './views/CreatePost';
-import PostDetail from './views/PostDetail';
+import NavigationBar from './components/NavigationBar.jsx';
+import Home from './views/Home.jsx';
+import Login from './views/Login.jsx';
+import Register from './views/Register.jsx';
+import Profile from './views/Profile.jsx';
+import Shop from './views/Shop.jsx';
+import CreatePost from './views/CreatePost.jsx';
+import PostDetail from './views/PostDetail.jsx';
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useContext(UserContext);
@@ -25,9 +25,8 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        
-        {/* Rutas Privadas */}
-        <Route path="/shop" element={<ProtectedRoute><Shop /></ProtectedRoute>} />
+        <Route path="/shop" element={<Shop />} />
+
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/create-post" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
         <Route path="/post/:id" element={<ProtectedRoute><PostDetail /></ProtectedRoute>} />
