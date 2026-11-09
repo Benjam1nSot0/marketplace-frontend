@@ -2,13 +2,12 @@ import { createContext, useState, useEffect } from 'react';
 
 export const PostsContext = createContext();
 
-// Reemplaza esta URL con la tuya de Render (sin la barra / al final)
+// Reemplaza con tu URL real de Render
 const BASE_URL = 'https://marketplace-backend-aq32.onrender.com';
 
 export const PostsProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
 
-  // Cargar publicaciones desde PostgreSQL en Render
   const getPosts = async () => {
     try {
       const res = await fetch(`${BASE_URL}/posts`);
@@ -21,7 +20,6 @@ export const PostsProvider = ({ children }) => {
     }
   };
 
-  // Guardar una nueva publicación en Render
   const addPost = async (newPost) => {
     try {
       const token = localStorage.getItem('token');
@@ -35,10 +33,16 @@ export const PostsProvider = ({ children }) => {
       });
 
       if (res.ok) {
-        await getPosts(); // Recargar el feed con la nueva publicación
+        await getPosts();
+        return true;
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Error al crear la publicación');
+        return false;
       }
     } catch (error) {
-      console.error('Error al crear la publicación:', error);
+      console.error('Error al crear publicación:', error);
+      return false;
     }
   };
 
