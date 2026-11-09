@@ -1,6 +1,10 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
 export default function Home() {
+  const { token } = useContext(UserContext);
+
   return (
     <div className="vh-100 d-flex flex-column justify-content-center align-items-center text-center text-white position-relative overflow-hidden" 
          style={{
@@ -14,12 +18,20 @@ export default function Home() {
           Encuentra y vende productos de forma rápida, segura y directa. Conéctate con miles de compradores.
         </p>
         <div className="d-flex justify-content-center gap-3">
-          <Link to="/shop" className="btn btn-warning btn-lg px-4 fw-bold">
-            Explorar Tienda
-          </Link>
-          <Link to="/register" className="btn btn-outline-light btn-lg px-4">
-            Crear una Cuenta
-          </Link>
+          {token ? (
+            <Link to="/shop" className="btn btn-warning btn-lg px-4 fw-bold">
+              Ir a la Tienda
+            </Link>
+          ) : (
+            <>
+              <Link to="/login" className="btn btn-warning btn-lg px-4 fw-bold">
+                Iniciar Sesión
+              </Link>
+              <Link to="/register" className="btn btn-outline-light btn-lg px-4">
+                Crear una Cuenta
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>

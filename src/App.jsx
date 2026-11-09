@@ -22,11 +22,13 @@ function AppRoutes() {
     <BrowserRouter>
       <NavigationBar />
       <Routes>
+        {/* Rutas Públicas */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/shop" element={<Shop />} />
 
+        {/* Rutas Privadas */}
+        <Route path="/shop" element={<ProtectedRoute><Shop /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/create-post" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
         <Route path="/post/:id" element={<ProtectedRoute><PostDetail /></ProtectedRoute>} />
